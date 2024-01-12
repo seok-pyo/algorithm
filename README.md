@@ -1,5 +1,5 @@
 # algorithm
 
-2024 - 01 -10 : BFS 최단거리(방향, 양방향 그래프), 이진트리 탐색
+algorithm with c++
 
 

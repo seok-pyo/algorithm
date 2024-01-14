@@ -1,37 +1,54 @@
 #include <iostream>
 #include <vector>
 #include <deque>
+#include <fstream>
 using namespace std;
-vector<int> qs;
 deque<int> arr;
+vector<int> res;
+vector<int> qs;
+
 int main() {
-	int n, type, el, m, i, j;
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, b, idx, i, tmp;
+
 	cin >> n;
-
-	for (i = 0; i < n; i++) {
-		cin >> type;
-		qs.push_back(type);
+	qs.resize(n + 1);
+	for (i = 1; i <= n; i++) {
+		cin >> b;
+		qs[i] = b;
+		arr.push_back(i);
 	}
 
-	for (i = 0; i < n; i++) {
-		cin >> el;
-		if (qs[i] == 0) {
-			arr.push_front(el);
+	idx = arr.front();
+	arr.pop_front();
+	res.push_back(idx);
+
+	while (!arr.empty()) {
+		if (qs[idx] > 0) {
+			for (i = 0; i < qs[idx] - 1; i++) {
+				tmp = arr.front();
+				arr.pop_front();
+				arr.push_back(tmp);
+			}
+			idx = arr.front();
+			arr.pop_front();
 		}
+		else {
+			for (i = 0; i < -qs[idx]; i++) {
+				tmp = arr.back();
+				arr.pop_back();
+				arr.push_front(tmp);
+			}
+			idx = arr.front();
+			arr.pop_front();
+		}
+		res.push_back(idx);
 	}
 
-	cin >> m;
-
-	for (i = 0; i < m; i++) {
-		cin >> el;
-		arr.push_back(el);
-	}
-
-	for (i = 0; i < m; i++) {
-		cout << arr[i] << " ";
+	for (i = 0; i < res.size(); i++) {
+		cout << res[i] << " ";
 	}
 
 	return 0;	
 }
-
-

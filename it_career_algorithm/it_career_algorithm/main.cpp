@@ -9,22 +9,17 @@ int main() {
 	cin >> n;
 	vector<int> arr(n);
 	for (int i = 0; i < n; i++) {
-		cin >> v;
-		arr.push_back(v);
+		//cin >> v;
+		//arr.push_back(v); // 000 + 1 2 5 를 추가적으로 입력받는다.
+		cin >> arr[i];
 	}
+	
 	cin >> m;
-	vector<int> dy(m + 1, 0);
+	vector<int> dy(m + 1, 1000); // 최소값을 구하기 위해서 1000으로 초기화
+	dy[0] = 0;
 	for (int i = 0; i < n; i++) {
-		v = arr[i];
-		for (int j = v; j <= m; j++) {
-			if (dy[j] == 0) {
-				dy[j] = 1;
-			}
-			else {
-				if (dy[j] <= dy[j - v] + 1) {
-					dy[j] = dy[j - v] + 1;
-				}
-			}
+		for (int j = arr[i]; j <= m; j++) {
+			dy[j] = min(dy[j], dy[j - arr[i]] + 1);
 		}
 	}
 	cout << dy[m];

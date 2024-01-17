@@ -10,12 +10,8 @@ int main() {
 	vector<int> dy(m + 1, 0);
 	for (int i = 1; i <= n; i++) {
 		cin >> s >> t;
-		if (dy[t] < dy[t] + s) {
-			dy[t] = dy[t] + s;
-		}
-		for (int j = 1; j <= m; j++) {
-			if (dy[j] != 0 && j + t <= m) 
-				dy[j+t] = max(dy[j + t], dy[j] + s);
+		for (int j = m; j >= t; j--) {
+			dy[j] = max(dy[j], dy[j-t] + s);
 		}
 	}
 	cout << dy[m];

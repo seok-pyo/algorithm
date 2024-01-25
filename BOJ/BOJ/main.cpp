@@ -1,10 +1,12 @@
 #include <iostream>
-#include <string>
+#include <algorithm>
 using namespace std;
 int n, m;
 int arr[9];
 int ans[9];
-void DFS(int L, int S) {
+int numbers[9];
+
+void DFS(int L) {
 	if (L == m) {
 		for (int i = 0; i < m; i++) {
 			cout << ans[i] << " ";
@@ -12,21 +14,28 @@ void DFS(int L, int S) {
 		cout << '\n';
 	}
 	else {
-		for (int i = S; i <= n; i++) {
-			 // if (arr[i] == 0) {
-				// arr[i] = 1;
-			ans[L] = i;
-			DFS(L + 1, i);
-				// arr[i] = 0;
-			 //}
+		for (int i = 0; i < n; i++) {
+			 if (arr[i] == 0) {
+				arr[i] = 1;
+				ans[L] = numbers[i];
+				DFS(L + 1);
+				arr[i] = 0;
+			 }
 		}
 	}
 }
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
+
 	cin >> n >> m;
-	DFS(0, 1);
+	for (int i = 0; i < n; i++) {
+		cin >> numbers[i];
+	}
+
+	sort(numbers, numbers+n);
+
+	DFS(0);
 
 	return 0;
 }

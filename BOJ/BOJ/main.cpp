@@ -13,12 +13,12 @@ void DFS(int L, int S) {
 	}
 	else {
 		for (int i = S; i <= n; i++) {
-			 if (arr[i] == 0) {
+			 // if (arr[i] == 0) {
 				// arr[i] = 1;
-				ans[L] = i;
-				DFS(L + 1, i+1);
+			ans[L] = i;
+			DFS(L + 1, i);
 				// arr[i] = 0;
-			 }
+			 //}
 		}
 	}
 }

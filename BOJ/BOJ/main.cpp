@@ -11,7 +11,7 @@ void DFS(int L, int sum, vector<pair<int, int>>& arr) {
 	}
 	else {
 		DFS(L + arr[L].first, sum + arr[L].second, arr);
-		DFS(L+1, sum, arr);
+		DFS(L+1, sum, arr); // point - L이 넘어갈 때 선택하지 않은 경우 다음 칸으로 넘어간다.
 	}
 }
 

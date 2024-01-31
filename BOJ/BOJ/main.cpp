@@ -1,41 +1,49 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
-#include <algorithm>
 #include <vector>
 using namespace std;
+int n;
+int ans = -2147000000;
+int chk[9];
+
+int sum(vector<int>& arr) {
+	int sum = 0;
+	for (int i = 0; i < arr.size() - 1; i++) {
+			int tmp = abs(arr[i] - arr[i + 1]);
+			sum += tmp;
+	}
+	return sum;
+}
+
+void DFS(int L, vector<int>& a, vector<int>& arr) {
+	if (L == n) {
+		ans = max(ans, sum(a));
+	}
+	else {
+		for (int i = 0; i < n; i++) {
+			if (chk[i] == 0) {
+				chk[i] = 1;
+				a.push_back(arr[i]);
+				DFS(L + 1, a, arr);
+				chk[i] = 0;
+				a.pop_back();
+			}
+		}
+	}
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	int n; 
 	cin >> n;
 	vector<int> arr(n);
 	for (int i = 0; i < n; i++) {
-		arr[i] = i + 1;
+		cin >> arr[i];
 	}
-
-	int flag = 1;
-
-	while (flag) {
-		int l = n - 1;
-		while (l > 0 && arr[l - 1] >= arr[l]) l--;
-
-
-		for (int i = 0; i < n; i++) {
-			cout << arr[i] << ' ';	
-		}
-
-		if (l <= 0) {
-			break;
-		}
-
-		int p = n - 1;
-		while (p > 0 && l > 0 && arr[p] <= arr[l - 1]) p--;
-		swap(arr[l - 1], arr[p]);
-		sort(arr.begin() + l, arr.end());
-		cout << '\n';
-	}
-	cout << '\n';
+	vector<int> as;
+	
+	DFS(0, as, arr);
+	cout << ans << '\n';
 	return 0;
 }

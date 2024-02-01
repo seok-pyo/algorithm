@@ -1,14 +1,14 @@
 #include <iostream>
 #include <algorithm>
-#include <string>
 #include <vector>
 using namespace std;
-int n, m;
-int chk[10];
-void DFS(int L, vector<int> &arr, int S) {
-	if (L == m) {
-		for (int i = 0; i < m; i++) {
-			cout << arr[i] << " ";
+int n;
+int chk[15];
+void DFS(int L, vector<int> &ans, int S, vector<int> &ina) {
+	if (L == 6) {
+		sort(ans.begin(), ans.end());
+		for (int i = 0; i < 6; i++) {
+			cout << ans[i] << " ";
 		}
 		cout << '\n';
 	}
@@ -16,10 +16,10 @@ void DFS(int L, vector<int> &arr, int S) {
 		for(int i = S; i<n; i++){
 			if (chk[i] == 0) {
 				chk[i] = 1;
-				arr.push_back(i+1);
-				DFS(L + 1, arr, i);
+				ans.push_back(ina[i]);
+				DFS(L + 1, ans, i+1, ina);
 				chk[i] = 0;
-				arr.pop_back();
+				ans.pop_back();
 			}
 		}
 	}
@@ -28,10 +28,20 @@ void DFS(int L, vector<int> &arr, int S) {
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	cin >> n >> m;
-	vector<int> arr;
-	DFS(0, arr, 0);
+	while (true) {
+		cin >> n;
+		vector<int> ans;
+		vector<int> ina;
+		if (n == 0) {
+			break;
+		}
+		int num;
+		for (int i = 0; i < n; i++) {
+			cin >> num;
+			ina.push_back(num);
+		}
+		DFS(0, ans, 0, ina);
+		cout << '\n';
+	}
 	return 0;
 }
-
-

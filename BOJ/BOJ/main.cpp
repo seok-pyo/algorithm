@@ -1,55 +1,32 @@
 // #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <cstdio>
-
+#include <vector>
 using namespace std;
-int a[4][4];
+void subsets(int n, vector<int> &vt, int target) {
+	int cnt = 0;
+	for (int i = 1; i < (1 << n); ++i) {
+		int sum = 0;
+		for (int j = 0; j < n; ++j) {
+			if (i & (1 << j)) {
+				sum += vt[j];
+			}
+		}
+		if (sum == target) cnt++;
+	}
+	cout << cnt << '\n';
+}
+using namespace std;
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-
-	int n, m;
-	scanf("%d %d", &n, &m);
+	int n, t;
+	cin >> n >> t;
+	vector<int> vt(n);
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			scanf("%1d", &a[i][j]);
-		}
+		cin >> vt[i];
 	}
-	int ans = 0;
-
-	for (int s = 0; s < (1<<(n * m)); s++) {
-		int sum = 0;
-		for (int i = 0; i < n; i++) {
-			int cur = 0;
-			for (int j = 0; j < m; j++) {
-				int k = i * m + j;
-				if ((s & (1<<k)) == 0) {
-					cur = cur * 10 + a[i][j];
-				}
-				else {
-					sum += cur;
-					cur = 0;
-				}
-			}
-			sum += cur;
-		}
-
-		for (int j = 0; j < m; j++) {
-			int cur = 0;
-			for (int i = 0; i < n; i++) {
-				int k = i * m + j;
-				if ((s & (1<<k)) != 0) {
-					cur = cur * 10 + a[i][j];
-				}
-				else {
-					sum += cur;
-					cur = 0;
-				}
-			}
-			sum += cur;
-		}
-		ans = max(ans, sum);
-	}
-	cout << ans << '\n';
+	subsets(n, vt, t);
+	
 	return 0;
 }

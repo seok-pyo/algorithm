@@ -1,75 +1,67 @@
-// #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include <cstdio>
 #include <vector>
-#include <queue>
 #include <algorithm>
+#include <climits>
 using namespace std;
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	int on = 2147000000, en = 2147000000;
+	long long on = LLONG_MAX, en = LLONG_MAX;
+	long long num;
 	int n;
 
 	cin >> n;
 
-	vector<int> arr(n);
+	vector<long long> arr;
+	vector<long long> oa;
+	vector<long long> ea;
 	
 	for (int i = 0; i < n; i++) {
-		cin >> arr[i];
+		cin >> num;
+		if (num % 2 == 0) ea.push_back(num);
+		else oa.push_back(num);
+		arr.push_back(num);
 	}
+
 	sort(arr.begin(), arr.end());
+	sort(oa.begin(), oa.end());
+	sort(ea.begin(), ea.end());
 
-	int odd, eve, tmp;
-	for (int i = 0; i < n; i++) {
-		int cur = arr[i];
-		odd = i, eve = i;
-		while (1) {
-			eve++;
-			if (eve >= n) break;
-			if (arr[eve] % 2 == 0) break;
-		}
-		while (1) {
-			odd++;
-			if (odd >= n) break;
-			if (arr[odd] % 2 != 0) break;
-		}
-		if (cur % 2 == 0) {
-			if (odd < n) {
-				tmp = cur - arr[odd];
-				if (tmp < 0) tmp = -tmp;
-				if (on > tmp) on = tmp;
-			}
-
-			if (eve < n) {
-				tmp = cur- arr[eve];
-				if (tmp < 0) tmp = -tmp;
-				if (en > tmp) en = tmp;
-			}
-		}
-		else {
-			if (odd < n) {
-				tmp = cur - arr[odd];
-				if (tmp < 0) tmp = -tmp;
-				if (en > tmp) en = tmp;
-			}
-
-			if (eve < n) {
-				tmp = cur - arr[eve];
-				if (tmp < 0) tmp = -tmp;
-				if (on > tmp) on = tmp;
-			}
+	long long t;
+	if (ea.size() != 0) {
+		for (int i = 0; i < ea.size()-1; i++) {
+			t = ea[i+1] - ea[i];
+			if (t < 0) t = -t;
+			if (t < en) en = t;
 		}
 	}
 
-	if (on == 2147000000) on = -1;
-	if (en == 2147000000) en = -1;
+	if (oa.size() != 0) {
+		for (int i = 0; i < oa.size() - 1; i++) {
+			t = oa[i+1] - oa[i];
+			if (t < 0) t = -t;
+			if (t < en) en = t;
+		}
+	}
+
+	for (int i = 0; i < arr.size() - 1; i++) {
+		if (arr[i] % 2 == 0 && arr[i + 1] % 2 != 0) {
+			t = arr[i + 1] - arr[i];
+			if (t < 0) t = -t;
+			if (t < on) on = t;
+		}
+		else if (arr[i] % 2 != 0 && arr[i + 1] % 2 == 0) {
+			t = arr[i + 1] - arr[i];
+			if (t < 0) t = -t;
+			if (t < on) on = t;
+		}
+	}
 	
-	cout << en << ' ' << on;
+	if (en == LLONG_MAX) en = -1;
+	if (on == LLONG_MAX) on = -1;
+	::cout << en << ' ' << on;
 
 	return 0;
 }
-
-

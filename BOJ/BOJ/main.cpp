@@ -2,53 +2,48 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
+int a[1000];
+int d[1000];
+int v[1000];
+
+void go(int p) {
+	if (p == -100) {
+		return;
+	}
+	go(v[p]);
+	cout << a[p] << ' ';
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	int n;
 	cin >> n;
-	vector<int> arr(n+1);
-	vector<int> dy(n+1);
-	for (int i = 1; i <= n; i++) {
-		cin >> arr[i];
+	for (int i = 0; i < n; i++) {
+		cin >> a[i];
 	}
-	int res = 0;
-	dy[1] = 1;
-	int lastIdx = 0;
-	for (int i = 2; i <= n; i++) {
-		int maxNum = 0;
-		for (int j = i - 1; j >= 1; j--) {
-			if (arr[j] < arr[i] && maxNum < dy[j]) {
-				maxNum = dy[j];
+	for (int i = 0; i < n; i++) {
+		d[i] = 1;
+		v[i] = -100;
+		for (int j = 0; j < i; j++) {
+			if (a[j] < a[i] && d[i] < d[j] + 1) {
+				d[i] = d[j] + 1;
+				v[i] = j;
 			}
 		}
-		dy[i] = maxNum + 1;
-		lastIdx = i;
-		/*if (res < dy[i]) res = dy[i];*/
 	}
 
-	// cout << *max_element(dy.begin(), dy.end()) << '\n';
-	
-	/*auto maxElement = max_element(dy.begin(), dy.end());
-	int maxVal = *maxElement;
-	int maxIdx = distance(dy.begin(), maxElement);*/
-	
-	vector<int> result;
-	if (lastIdx == 0) result.push_back(arr[1]);
-	else result.push_back(arr[lastIdx]);
-
-	for (int i = lastIdx; i >= 1; i--) {
-		if (dy[i] == dy[lastIdx] - 1 && arr[lastIdx] > arr[i]) {
-			result.push_back(arr[i]);
-			lastIdx = i;
-			break;
+	int ans = d[0];
+	int p = 0;
+	for (int i = 0; i < n; i++) {
+		if (ans < d[i]) {
+			ans = d[i];
+			p = i;
 		}
 	}
-	
-	for (int i = result.size()-1; i >= 0; i--) {
-		cout << result[i] << ' ';
-	}
 
+	cout << ans << '\n';
+	go(p);
+	cout << '\n';
 	return 0;
 }

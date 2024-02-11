@@ -2,33 +2,29 @@
 #include <algorithm>
 using namespace std;
 
-long long d[1000001][4];
-long long mod = 1000000009;
-
+int house[1001][4];
+int d[1001][4];
 int main() {
-
-	long long n;
+	int n;
 	cin >> n;
-	while (n--) {
-		long long num;
-		cin >> num;
-		for (int i = 1; i <= num; i++) {
-			
-			if (i >= 1 && d[i][1] == 0) {
-				d[i][1] = (d[i - 1][1] + d[i - 1][2] + d[i - 1][3])%mod;
-				if (i == 1) d[1][1] = 1LL;
-			}
-			if (i >= 2 && d[i][2]==0) {
-				d[i][2] = (d[i - 2][1] + d[i - 2][2] + d[i - 2][3])%mod;
-				if (i == 2) d[2][2] = 1LL;
-			}
-			if (i >= 3&&d[i][3]==0) {
-				d[i][3] = (d[i - 3][1] + d[i - 3][2] + d[i - 3][3])%mod;
-				if (i == 3) d[3][3] = 1LL;
-			}
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= 3; j++) {
+			cin >> house[i][j];
 		}
-		cout << (d[num][1] + d[num][2] + d[num][3])%mod << '\n';
 	}
 
+	d[1][1] = house[1][1];
+	d[1][2] = house[1][2];
+	d[1][3] = house[1][3];
+
+	for (int i = 2; i <= n; i++) {
+		d[i][1] = min(d[i - 1][2] + house[i][1], d[i - 1][3] + house[i][1]);
+		d[i][2] = min(d[i - 1][1] + house[i][2], d[i - 1][3] + house[i][2]);
+		d[i][3] = min(d[i - 1][2] + house[i][3], d[i - 1][1] + house[i][3]);
+	}
+
+	int ans = min(d[n][1], d[n][2]);
+
+	cout << min(ans, d[n][3]) << '\n';
 	return 0;
 }

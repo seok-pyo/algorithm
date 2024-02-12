@@ -2,7 +2,7 @@
 #include <algorithm>
 using namespace std;
 
-int dy[10001][3];
+int d[10001];
 int a[10001];
 
 int main() {
@@ -11,16 +11,21 @@ int main() {
 	for (int i = 1; i <= n; i++) {
 		cin >> a[i];
 	}
+	d[1] = a[1];
+	d[2] = a[1] + a[2];
 
-	for (int i = 1; i <= n; i++) {
-		dy[i][0] = max(dy[i - 1][1], max(dy[i - 1][2], dy[i - 1][0]));
-		// dy[i][1] = max(dy[i - 1][0] + a[i], dy[i - 1][1] + a[i]) 
-		// 2잔 연속해서 마신 경우가 된다.
-		dy[i][1] = dy[i - 1][0] + a[i];
-		dy[i][2] = dy[i - 1][1] + a[i];
+	for (int i = 3; i <= n; i++) {
+		d[i] = d[i - 1];
+		if (d[i] < d[i - 2] + a[i]) {
+			d[i] = d[i - 2] + a[i];
+		}
+		if (d[i] < d[i - 3] + a[i] + a[i - 1]) {
+			d[i] = d[i - 3] + a[i] + a[i - 1];
+		}
 	}
 
-	cout << max(dy[n][0], max(dy[n][1], dy[n][2]));
+	cout << d[n] << '\n';
+
 	return 0;
 }
 

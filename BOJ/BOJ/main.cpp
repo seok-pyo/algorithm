@@ -14,20 +14,20 @@ int main() {
 		// int sum = 0;
 		d[i] = a[i];
 		for (int j = 1; j <= i; j++) {
+			//if(a[j] < a[i]) {
 			if(a[j] < a[i] && d[i] < d[j] + a[i]) {
 				// sum += a[j];
 				d[i] = d[j] + a[i];
 			}
 		}
 		// d[i] = sum;
-		cout << d[i] << ' ';
 	}
 	int MAX = -2147000000;
 	for (int i = 1; i <= n; i++) {
 		MAX = max(MAX, d[i]);
 	}
 
-	// cout << MAX << '\n';
+	 cout << MAX << '\n';
 	return 0;
 }
 

@@ -3,6 +3,7 @@
 using namespace std;
 
 int d[100001];
+int d2[100001];
 int a[100001];
 
 int main() {
@@ -13,13 +14,36 @@ int main() {
 	}
 
 	for (int i = 1; i <= n; i++) {
-		int tmp = d[i - 1] + a[i];
-		if (a[i] > tmp) d[i] = a[i];
-		else d[i] = tmp;
+		d[i] = a[i];
+ 		if (i == 1) continue;
+		if (d[i] < d[i - 1] + a[i]) {
+			d[i] = d[i - 1] + a[i];
+		}
+	}
+	
+	for (int i = n; i >= 1; i--) {
+		d2[i] = a[i];
+		if (i == n) continue;
+		if (d2[i] < d2[i + 1] + a[i]) {
+			d2[i] = d2[i + 1] + a[i];
+		}
 	}
 
-	int max = *max_element(d, d+n);
-	cout << max << '\n';
+	int ans = d[0];
+
+	for (int i = 1; i <= n; i++) {
+		if (ans < d[i]) {
+			ans = d[i];
+		}
+	}
+
+	for (int i = 2; i < n; i++) {
+		if (ans < d[i - 1] + d2[i + 1]) {
+			ans = d[i - 1] + d2[i + 1];
+		}
+	}
+
+	cout << ans << '\n';
 
 	return 0;
 }

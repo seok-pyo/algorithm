@@ -1,50 +1,59 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <algorithm>
+#include <cstring>
 using namespace std;
-bool a[2000][2000]; // 인접 행렬
-vector<int> g[2000]; // 인접 리스트
-vector<pair<int, int>> edges; // 간선 리스트
-int main() {
-	int n, m;
-	cin >> n >> m;
-	for (int i = 0; i < m; i++) {
-		int from, to;
-		cin >> from >> to;
-		edges.push_back({ from, to });
-		edges.push_back({ to, from });
-		a[from][to] = a[to][from] = true;
-		g[from].push_back(to);
-		g[to].push_back(from);
+
+vector<int> g[1001];
+bool chk[1001];
+
+void DFS(int node) {
+	chk[node] = true;
+	cout << node << " ";
+	for (int i = 0; i < g[node].size(); i++) {
+		int next = g[node][i];
+		if (chk[next] == false) {
+			DFS(next);
+		}
 	}
-	m *= 2;
-	for (int i = 0; i < m; i++) {
-		for (int j = 0; j < m; j++) {
-			int A = edges[i].first;
-			int B = edges[i].second;
+}
 
-			int C = edges[j].first;
-			int D = edges[j].second;
-			// A==B && C==D 확인
-			if (A == B || A == C || A == D || B == C || B==D || C == D) {
-				continue;
-			}
-
-			// B==C 확인
-			if (!a[B][C]) {
-				continue;
-			}
-
-			for (int E : g[D]) {
-				if (A == E || B == E || C == E || D == E) {
-					continue;
-				}
-				cout << 1 << '\n';
-				return 0;
+void BFS(int start) {
+	queue<int> Q;
+	memset(chk, false, sizeof(chk));
+	chk[start] = true;
+	Q.push(start);
+	while (!Q.empty()) {
+		int node = Q.front();
+		Q.pop();
+		cout << node << " ";
+		for (int i = 0; i < g[node].size(); i++) {
+			int next = g[node][i];
+			if (chk[next] == false) {
+				chk[next] = true;
+				Q.push(next);
 			}
 		}
 	}
-	cout << 0 << '\n';
+}
+
+int main() {
+	int n, m, start;
+	cin >> n >> m >> start;
+	for (int i = 0; i < m; i++) {
+		int u, v;
+		cin >> u >> v;
+		g[u].push_back(v);
+		g[v].push_back(u);
+	}
+	for (int i = 1; i <= n; i++) {
+		sort(g[i].begin(), g[i].end());
+	}
+	DFS(start);
+	puts("");
+	BFS(start);
+	puts("");
 	return 0;
 }
 

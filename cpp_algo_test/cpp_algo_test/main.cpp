@@ -1,23 +1,31 @@
 #include <iostream>;
-
+#include <vector>;
 using namespace std;
 
-int fact(int n) {
-	if (n == 1 || n == 0) return 1;
-	return n * fact(n - 1);
-}
-
-int fact_for(int n) {
-	int res = 1;
-	for (int i = n; i > 1; i--) {
-		res *= i;
-	}
-	return res;
-}
-
-int n = 5;
+string s, ret;
+int cnt[200], flag;
+char mid;
 int main() {
-	cout << fact(n) << '\n';
-	cout << fact_for(n) << '\n';
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cin >> s;
+	for (char a : s) cnt[a]++;
+	for (int i = 'Z'; i >= 'A'; i--) {
+		if (cnt[i]) {
+			if (cnt[i] & 1) {
+				mid = char(i); flag++;
+				cnt[i]--;
+			}
+			if (flag == 2) break;
+			for (int j = 0; j < cnt[i]; j += 2) {
+				ret = char(i) + ret;
+				ret += char(i);
+			}
+		}
+	}
+	if (mid) ret.insert(ret.begin() + ret.size() / 2, mid);
+	if (flag == 2) cout << "I'm Sorry Hansoo\n";
+	else cout << ret << "\n";
+
 	return 0;
 }
